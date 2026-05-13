@@ -13,7 +13,7 @@ def get_user(user_id: int):
     return controller.get_single_user(user_id)
 
 @router.post("/users")
-def create_user(user: User): # <- The syntax error is fixed here
+def create_user(user: User):
     return controller.create_new_user(user)
 
 @router.put("/users/{user_id}")
