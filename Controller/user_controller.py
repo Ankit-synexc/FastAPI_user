@@ -1,64 +1,29 @@
 from models.user_schema import User
-
-users = []
-
+from services import user_services
+from utils.response_util import success_response
 
 def get_all_users():
-    return users
-
+    users = user_services.get_all_users_query()
+    return success_response(data=users, message="All users fetched")
 
 def get_single_user(user_id: int):
-
-    for user in users:
-
-        if user.id == user_id:
-            return user
-
-    return {
-        "message": "User not found"
-    }
-
+    user = user_services.get_user_by_id_query(user_id)
+    if user:
+        return success_response(data=user, message="User found")
+    return success_response(data=None, message="User not found")
 
 def create_new_user(user: User):
-
-    users.append(user)
-
-    return {
-        "message": "User created successfully",
-        "user": user
-    }
-
+    created_user = user_services.create_user_query(user)
+    return success_response(data=created_user, message="User created")
 
 def update_existing_user(user_id: int, updated_user: User):
-
-    for index, user in enumerate(users):
-
-        if user.id == user_id:
-
-            users[index] = updated_user
-
-            return {
-                "message": "User updated successfully",
-                "user": updated_user
-            }
-
-    return {
-        "message": "User not found"
-    }
-
+    user = user_services.update_user_query(user_id, updated_user)
+    if user:
+        return success_response(data=user, message="User updated")
+    return success_response(data=None, message="User not found")
 
 def delete_existing_user(user_id: int):
-
-    for user in users:
-
-        if user.id == user_id:
-
-            users.remove(user)
-
-            return {
-                "message": "User deleted successfully"
-            }
-
-    return {
-        "message": "User not found"
-    }
+    success = user_services.delete_user_query(user_id)
+    if success:
+        return success_response(data=None, message="User deleted")
+    return success_response(data=None, message="User not found")

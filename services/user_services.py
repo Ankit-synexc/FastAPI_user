@@ -1,16 +1,31 @@
-from Controller.user_controller import *
+from models.user_schema import User
 
+# Simulated Database
+users_db = []
 
-def get_user(user_id: int):
-    return get_single_user(user_id)
+def get_all_users_query():
+    return users_db
 
+def get_user_by_id_query(user_id: int):
+    for user in users_db:
+        if user.id == user_id:
+            return user
+    return None
 
+def create_user_query(user: User):
+    users_db.append(user)
+    return user
 
-def create_user(user: User):
-    return create_new_user(user)
+def update_user_query(user_id: int, updated_user: User):
+    for index, user in enumerate(users_db):
+        if user.id == user_id:
+            users_db[index] = updated_user
+            return updated_user
+    return None
 
-def update_user(user_id: int, updated_user: User):
-    return update_existing_user(user_id, updated_user)
-
-def delete_user(user_id: int):
-    return delete_existing_user(user_id)
+def delete_user_query(user_id: int):
+    for user in users_db:
+        if user.id == user_id:
+            users_db.remove(user)
+            return True
+    return False
